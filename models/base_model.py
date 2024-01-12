@@ -22,6 +22,16 @@ class BaseModel:
         """
         if kwargs:
             for key in kwargs.keys():
+                int_attrs = [
+                    "number_rooms", 
+                    "number_bathrooms", 
+                    "max_guest", 
+                    "price_by_night"
+                ]
+                float_attrs = [
+                    "longitude",
+                    "latitude"
+                ]
                 if key != "__class__":
                     if key == "created_at":
                         self.created_at = datetime.fromisoformat(kwargs[key])
@@ -29,6 +39,10 @@ class BaseModel:
                         self.updated_at = datetime.fromisoformat(kwargs[key])
                     elif key == "id":
                         self.id = kwargs[key]
+                    elif key in int_attrs:
+                        key = int(kwargs[key])
+                    elif key in float_attrs:
+                        key = float(kwargs[key])
                     else:
                         key = kwargs[key]
         else:
@@ -71,10 +85,3 @@ class BaseModel:
         """Return string representation of the object"""
         rep = f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
         return rep
-
-
-if __name__ == "__main__":
-    base = BaseModel()
-    print(base)
-    print("============================================================")
-    print(base.to_dict())
