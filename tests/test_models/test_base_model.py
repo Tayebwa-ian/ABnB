@@ -1,10 +1,10 @@
 #!/usr/bin/python3
+"""BaseModel unit tests module
+"""
 import unittest
 from datetime import datetime, timedelta
 from uuid import UUID
 from ...models import base_model
-"""BaseModel unit tests module
-"""
 
 
 class Test_base_model(unittest.TestCase):

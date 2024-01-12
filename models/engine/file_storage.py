@@ -1,8 +1,15 @@
-import json
+#!/usr/bin/python3
 """
 File storage Module
 Serialization and Deserialization of JSON data to and from a file
 """
+import json
+from ..amenity import Amenity
+from ..city import City
+from ..place import Place
+from ..review import Review
+from ..state import State
+from ..user import User
 
 
 class FileStorage:
@@ -15,8 +22,7 @@ class FileStorage:
         __objects: dictionary - empty but will store all objects
                     by <class name>.id
     """
-
-    __file_path = ""
+    __file_path = "file.json"
     __objects = {}
 
     def all(self) -> dict:
@@ -30,7 +36,7 @@ class FileStorage:
         Return: None
         """
         key = obj.__class__.__name__ + ".{}".format(obj.id)
-        self.__objects[key] = obj
+        self.__objects[key] = obj.to_dict()
 
     def save(self) -> None:
         """ serializes __objects to the JSON file"""
