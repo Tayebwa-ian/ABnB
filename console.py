@@ -285,7 +285,6 @@ class HBNBCommand(cmd.Cmd):
                             + fr[2] + " " + str(temp_dict)
                     else:
                         line = fr[1] + " " + fr[0] + " " + " ".join(fr[2:])
-        print(line)
         return super().precmd(line)
 
     def emptyline(self) -> None:
