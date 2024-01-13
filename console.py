@@ -6,6 +6,7 @@ Description:
     commands that interact with the overall project
 """
 import cmd
+import re
 from models import (storage, User, City,
                     Amenity, Place, BaseModel, State, Review)
 
@@ -38,11 +39,12 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, value) -> bool:
         """Exits the program"""
+        print() # insert the next characters on a new line
         return True
 
     def help_EOF(self) -> None:
         """Text to display when help command in run with EOF cmd"""
-        print("EOF command to exit the program\n")
+        print("EOF command to exit the program")
 
     def do_create(self, value) -> None:
         """Create an instance of the specified class saves it and print id
@@ -62,7 +64,7 @@ class HBNBCommand(cmd.Cmd):
 
     def help_create(self) -> None:
         """Text to display when help command in run with create cmd"""
-        print("Create a new instance of a class "\
+        print("Create a new instance of a class "
               "\nUsage: create User (creates a new user instance)")
 
     def do_show(self, value) -> None:
@@ -95,8 +97,8 @@ class HBNBCommand(cmd.Cmd):
 
     def help_show(self) -> None:
         """Text to display when help command in run with show cmd"""
-        print("Prints a string representation of an instance "\
-              "\nUsage: show User user-id "\
+        print("Prints a string representation of an instance "
+              "\nUsage: show User user-id "
               "(prints a str rep of a user instance)")
 
     def do_destroy(self, value) -> None:
@@ -129,8 +131,8 @@ class HBNBCommand(cmd.Cmd):
 
     def help_destroy(self) -> None:
         """Text to display when help command in run with destroy cmd"""
-        print("Delete an instance based on the class name and id "\
-              "\nUsage: delete User user-id "\
+        print("Delete an instance based on the class name and id "
+              "\nUsage: delete User user-id "
               "(deletes user instance with id user-id)")
 
     def do_all(self, value) -> None:
@@ -166,8 +168,8 @@ class HBNBCommand(cmd.Cmd):
 
     def help_all(self) -> None:
         """Text to display when help command in run with all cmd"""
-        print("Prints all string representation of all instances "\
-              "based or not on the class name \nUsage: all User "\
+        print("Prints all string representation of all instances "
+              "based or not on the class name \nUsage: all User "
               "(print all str rep of User objects)")
 
     def do_update(self, value) -> None:
@@ -205,11 +207,59 @@ class HBNBCommand(cmd.Cmd):
 
     def help_update(self) -> None:
         """Text to display when help command in run with update cmd"""
-        print("Updates an instance based on the class name "\
-              "and id by adding or updating attribute "\
-              "\nUsage: update User 1234-1234-1234 first_name IAN "\
-              "(updates User with ID 1234-1234-1234 with "\
+        print("Updates an instance based on the class name "
+              "and id by adding or updating attribute "
+              "\nUsage: update User 1234-1234-1234 first_name IAN "
+              "(updates User with ID 1234-1234-1234 with "
               "first_name attribute and value IAN)")
+
+    def do_count(self, value) -> None:
+        """Retrieves and prints the number of instances of a class:
+        Arg:
+            Value: the class name
+        Return: None
+        """
+        count = 0
+        all_obj = storage.all()
+        temp_obj = value.split()
+        if len(temp_obj) < 1:
+            print("** class name missing **")
+        else:
+            try:
+                classes[value]
+                for key in all_obj.keys():
+                    cl = key.split(".")
+                    if cl[0] == value:
+                        count += 1
+                print(count)
+            except KeyError:
+                print("** class doesn't exist **")
+
+    def help_count(self) -> None:
+        """Text to display when help command in run with count cmd"""
+        print("Prints the number of all instances "
+              "based on the class name \nUsage: count User "
+              "(print number of User objects)")
+
+    def precmd(self, line: str) -> str:
+        """Handle and Parse commands that are in form (User.all())"""
+        if line != "":
+            check = line.split(" ")
+            if line[-1] == ")" and len(check) == 1:
+                # use regular expressions to remove split the command
+                delimiters = r'[.()"]'
+                split_result = re.split(delimiters, line)
+                # create a line with only neccesary parts of the command
+                fr = [i for i in split_result if i != '']
+                if len(fr) == 2:
+                    line = fr[1] + " " + fr[0]
+                if len(fr) == 3:
+                    line = fr[1] + " " + fr[0] + " " + fr[2]
+        return super().precmd(line)
+
+    def emptyline(self) -> None:
+        """Execute nothing on pressing an empty line + ENTER"""
+        return
 
 
 if __name__ == '__main__':
