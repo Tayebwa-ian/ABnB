@@ -39,7 +39,6 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, value) -> bool:
         """Exits the program"""
-        print()  # insert the next characters on a new line
         return True
 
     def help_EOF(self) -> None:
@@ -194,16 +193,36 @@ class HBNBCommand(cmd.Cmd):
             all_obj = storage.all()
             # join the class name and id with a dot in middle
             key = ".".join(temp_obj[:2])
-            if key in all_obj.keys():
-                all_obj[key][temp_obj[2]] = temp_obj[3]
-                for k in all_obj.keys():
-                    classes[temp_obj[0]](**all_obj[k]).save()
+            if "{" and "}" in value:  # handles dictionary
+                delimiters = r'[ {} :,\']'
+                n_value = re.split(delimiters, value)
+                new_value = [i for i in n_value if i != ""]
+                if key in all_obj.keys():
+                    temp_new = new_value[2:]
+                    print(temp_new)
+                    for i in range(len(temp_new) - 1):
+                        if i % 2 == 0:
+                            all_obj[key][temp_new[i]] = temp_new[i + 1]
+                    print(all_obj)
+                    for k in all_obj.keys():
+                        classes[temp_obj[0]](**all_obj[k]).save()
+                else:
+                    try:
+                        classes[temp_obj[0]]
+                        print("** no instance found **")
+                    except NameError:
+                        print("** class doesn't exist **")
             else:
-                try:
-                    classes[temp_obj[0]]
-                    print("** no instance found **")
-                except NameError:
-                    print("** class doesn't exist **")
+                if key in all_obj.keys():
+                    all_obj[key][temp_obj[2]] = temp_obj[3]
+                    for k in all_obj.keys():
+                        classes[temp_obj[0]](**all_obj[k]).save()
+                else:
+                    try:
+                        classes[temp_obj[0]]
+                        print("** no instance found **")
+                    except NameError:
+                        print("** class doesn't exist **")
 
     def help_update(self) -> None:
         """Text to display when help command in run with update cmd"""
@@ -243,18 +262,30 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line: str) -> str:
         """Handle and Parse commands that are in form (User.all())"""
-        if line != "":
-            check = line.split(" ")
-            if line[-1] == ")" and len(check) == 1:
+        if line:
+            if line[-1] == ")":
                 # use regular expressions to remove split the command
-                delimiters = r'[.()"]'
+                delimiters = r'[.()" :{}\']'
                 split_result = re.split(delimiters, line)
                 # create a line with only neccesary parts of the command
-                fr = [i for i in split_result if i != '']
+                fr = [i for i in split_result if i not in ["", ","]]
                 if len(fr) == 2:
                     line = fr[1] + " " + fr[0]
-                if len(fr) == 3:
+                elif len(fr) == 3:
                     line = fr[1] + " " + fr[0] + " " + fr[2]
+                elif len(fr) > 3:
+                    # create a dictionary and parse it as the fourth arg
+                    if "{" and "}" in line:
+                        temp_dict = {}
+                        new_fr = fr[3:]
+                        for i in range(len(new_fr)):
+                            if i != (len(new_fr) - 1) and i % 2 == 0:
+                                temp_dict[new_fr[i]] = new_fr[i + 1]
+                        line = fr[1] + " " + fr[0] + " "\
+                            + fr[2] + " " + str(temp_dict)
+                    else:
+                        line = fr[1] + " " + fr[0] + " " + " ".join(fr[2:])
+        print(line)
         return super().precmd(line)
 
     def emptyline(self) -> None:
