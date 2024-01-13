@@ -39,7 +39,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, value) -> bool:
         """Exits the program"""
-        print() # insert the next characters on a new line
+        print()  # insert the next characters on a new line
         return True
 
     def help_EOF(self) -> None:
