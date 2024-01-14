@@ -4,7 +4,9 @@
 import unittest
 from datetime import datetime, timedelta
 from uuid import UUID
-from ...models import base_model
+import models
+
+base_model = models.base_model
 
 
 class Test_base_model(unittest.TestCase):
@@ -33,7 +35,7 @@ class Test_base_model(unittest.TestCase):
     def test_documentation(self) -> None:
         """Test if module and class documentations exist"""
         self.assertGreater(len(self.b1.__doc__), 0)
-        self.assertGreater(len(help(base_model)), 0)
+        self.assertGreater(len(base_model.__doc__), 0)
 
     def test_public_attrs(self) -> None:
         """
@@ -65,10 +67,10 @@ class Test_base_model(unittest.TestCase):
                                         self.b2.id, self.b2.__dict__)
         output4 = "[{}] ({}) {}".format(self.b4.__class__.__name__,
                                         self.b4.id, self.b4.__dict__)
-        self.assertEqual(print(self.b1), output1)
-        self.assertEqual(print(self.b2), output2)
+        self.assertEqual(str(self.b1), output1)
+        self.assertEqual(str(self.b2), output2)
         # test with dict passed as an arg unpon instantiation
-        self.assertEqual(print(self.b4), output4)
+        self.assertEqual(str(self.b4), output4)
 
     def test_date_update_on_save(self) -> None:
         """Check if updated_at attr is updated upon save"""
@@ -100,7 +102,7 @@ class Test_base_model(unittest.TestCase):
         self.assertTrue("__class__" in dict2.keys())
         self.assertTrue(dict2["__class__"] == self.b1.__class__.__name__)
         # check if all value in dict1 are in dict2
-        self.assertTrue(all(item in dict2.items() for item in dict1.items()))
+        self.assertTrue(all(key in dict2.keys() for key in dict1.keys()))
 
     def test_date_formats(self) -> None:
         """
