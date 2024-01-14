@@ -23,9 +23,9 @@ class BaseModel:
         if kwargs:
             for key in kwargs.keys():
                 int_attrs = [
-                    "number_rooms", 
-                    "number_bathrooms", 
-                    "max_guest", 
+                    "number_rooms",
+                    "number_bathrooms",
+                    "max_guest",
                     "price_by_night"
                 ]
                 float_attrs = [
@@ -40,11 +40,11 @@ class BaseModel:
                     elif key == "id":
                         self.id = kwargs[key]
                     elif key in int_attrs:
-                        key = int(kwargs[key])
+                        setattr(self, key, int(kwargs[key]))
                     elif key in float_attrs:
-                        key = float(kwargs[key])
+                        setattr(self, key, float(kwargs[key]))
                     else:
-                        key = kwargs[key]
+                        setattr(self, key, kwargs[key])
         else:
             self.id = str(uuid4())
             self.created_at = datetime.now()

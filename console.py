@@ -199,11 +199,9 @@ class HBNBCommand(cmd.Cmd):
                 new_value = [i for i in n_value if i != ""]
                 if key in all_obj.keys():
                     temp_new = new_value[2:]
-                    print(temp_new)
                     for i in range(len(temp_new) - 1):
                         if i % 2 == 0:
                             all_obj[key][temp_new[i]] = temp_new[i + 1]
-                    print(all_obj)
                     for k in all_obj.keys():
                         classes[temp_obj[0]](**all_obj[k]).save()
                 else:
@@ -230,7 +228,9 @@ class HBNBCommand(cmd.Cmd):
               "and id by adding or updating attribute "
               "\nUsage: update User 1234-1234-1234 first_name IAN "
               "(updates User with ID 1234-1234-1234 with "
-              "first_name attribute and value IAN)")
+              "first_name attribute and value IAN)\n"
+              "Usage: User.update(\"38f22813-2753-4d42-b37c-57a17f1e4f88\""
+              ", \"first_name\", \"John\")")
 
     def do_count(self, value) -> None:
         """Retrieves and prints the number of instances of a class:
@@ -257,7 +257,8 @@ class HBNBCommand(cmd.Cmd):
     def help_count(self) -> None:
         """Text to display when help command in run with count cmd"""
         print("Prints the number of all instances "
-              "based on the class name \nUsage: count User "
+              "based on the class name \nUsage: count User\n"
+              "Usage: User.count()\n"
               "(print number of User objects)")
 
     def precmd(self, line: str) -> str:

@@ -27,8 +27,9 @@ Destroy an object
 
 1. Clone This Repo git clone [from](https://github.com/Tayebwa-ian/AirBnB_clone)
 2. Access AirBnb directory: cd AirBnB_clone
-3. Run hbnb(interactively): ./console and enter command
-4. Run hbnb(non-interactively): echo "<command>" | ./console.py
+3. Install pycodestyle: `pip install pycodestyle`
+4. Run hbnb(interactively): ./console and enter command
+5. Run hbnb(non-interactively): echo "<command>" | ./console.py
 
 ## Available Command:
 ---
@@ -67,6 +68,22 @@ a78c8527-cfad-4eda-a02d-d43b63a338e0
 ** attribute name missing ** 
 (hbnb) update City 
 ** instance id missing ** 
-(hbnb) destroy City a78c8527-cfad-4eda-a02d-d43b63a338e0 
-(hbnb) quit 
+(hbnb) destroy City a78c8527-cfad-4eda-a02d-d43b63a338e0  
+(hbnb) User.all()
+["[User] (337c109d-e787-4b7b-a3f0-88f66ba9953f) {'id': '337c109d-e787-4b7b-a3f0-88f66ba9953f', 'created_at': datetime.datetime(2024, 1, 12, 21, 32, 18, 490270), 'updated_at': datetime.datetime(2024, 1, 12, 21, 32, 18, 490372)}"]
+(hbnb) Place.all()
+["[Place] (7643d25f-18c3-4f47-b9ec-d3f3b64f2f6c) {'id': '7643d25f-18c3-4f47-b9ec-d3f3b64f2f6c', 'created_at': datetime.datetime(2024, 1, 12, 23, 3, 55, 886310), 'updated_at': datetime.datetime(2024, 1, 12, 23, 3, 55, 886327)}"]
+(hbnb) Place.show(7643d25f-18c3-4f47-b9ec-d3f3b64f2f6c)
+[Place] (7643d25f-18c3-4f47-b9ec-d3f3b64f2f6c) {'id': '7643d25f-18c3-4f47-b9ec-d3f3b64f2f6c', 'created_at': datetime.datetime(2024, 1, 12, 23, 3, 55, 886310), 'updated_at': datetime.datetime(2024, 1, 12, 23, 3, 55, 886327)}
+(hbnb) User.update("337c109d-e787-4b7b-a3f0-88f66ba9953f", {'first_name': "Samuel", "age": 29})
+(hbnb) User.count()
+1
+(hbnb) create User
+c72caf8e-5018-4e04-a253-72694d8b8850
+(hbnb) User.count()
+2
+(hbnb) User.update("c72caf8e-5018-4e04-a253-72694d8b8850", "first_name", "Muhumuza")
+(hbnb) count User
+2
+(hbnb) quit
 ```
